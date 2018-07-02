@@ -1,12 +1,12 @@
 # K34M
 
-fork of https://github.com/ryannining/karyacontroller and code dedicated for esp8266 and in future esp32
+Fork/based on https://github.com/ryannining/karyacontroller  a dedicated board and code for esp8266 and in future esp32
 
 Using D1 mini from wemos and in future d1 mini esp32 from eht modules
 
 Board for cover multiple Maker needs compatible with that gcode machines.
 
-cnc,plotter, 3dprinter,plasma cutter,foam cutter..eccc.
+cnc,plotter, 3dprinter,plasma cutter,foam cutter..etc.
 
 Why bigger size of original karyacontroller:
   - for improve wiring for no have cables on steppers or other cables on boad.
@@ -27,12 +27,23 @@ Why bigger size of original karyacontroller:
 
 
 image of demo board
-
+![Image of board](https://github.com/exilaus/K34M/images/3d.jpg)
 
 image of pins
-
+![Image of board](https://github.com/exilaus/K34M/images/board.jpg)
 
 ### Configuration pins
+Full 4° Axis without no endstops
+![Image of board](https://github.com/exilaus/K34M/images/Picture1.jpg)
+That configuration need for use 4° (E Driver) driver fully indipendent. For have that configuration need lose use of endstop.
 
+That configuration are usefull for 4° axis Foam cutter cnc
+
+4° Axis with endstops 
+
+![Image of board](https://github.com/exilaus/K34M/images/Picture2.jpg)
+That configuration use E DIR in common with Z DIR that permit use board for CNC  3DPrinters plotter and so on
+
+Tha most common configuration for any build.
 
 Board currenlty in shippping to italy need wait for testing and we release gerber original easyeda project and cleaned code .
