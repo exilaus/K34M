@@ -27,22 +27,26 @@ Why bigger size of original karyacontroller:
 
 
 image of demo board
+
 ![Image of board](https://github.com/exilaus/K34M/blob/master/images/3d.JPG)
 
 image of pins
+
 ![Image of board](https://github.com/exilaus/K34M/blob/master/images/board.jpg)
 
 ### Configuration pins
-Full 4° Axis without no endstops
+> Full 4° Axis without no endstops
+
 ![Image of board](https://github.com/exilaus/K34M/blob/master/images/Picture1.jpg)
-That configuration need for use 4° (E Driver) driver fully indipendent. For have that configuration need lose use of endstop.
+>That configuration need for use 4° (E Driver) driver fully indipendent. For have that configuration need lose use of endstop.
 
-That configuration are usefull for 4° axis Foam cutter cnc
+>That configuration are usefull for 4° axis Foam cutter cnc
 
-4° Axis with endstops 
+>4° Axis with endstops 
 
 ![Image of board](https://github.com/exilaus/K34M/blob/master/images/Picture2.jpg)
-That configuration use E DIR in common with Z DIR that permit use board for CNC  3DPrinters plotter and so on
+
+>That configuration use E DIR in common with Z DIR that permit use board for CNC  3DPrinters plotter and so on
 
 Tha most common configuration for any build.
 
