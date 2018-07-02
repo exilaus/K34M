@@ -38,16 +38,14 @@ image of pins
 > Full 4° Axis without no endstops
 
 ![Image of board](https://github.com/exilaus/K34M/blob/master/images/Picture1.jpg)
->That configuration need for use 4° (E Driver) driver fully indipendent. For have that configuration need lose use of endstop.
 
->That configuration are usefull for 4° axis Foam cutter cnc
+That configuration need for use 4° (E Driver) driver fully indipendent. For have that configuration need lose use of endstop.
+That configuration are usefull for 4° axis Foam cutter cnc
 
 >4° Axis with endstops 
 
 ![Image of board](https://github.com/exilaus/K34M/blob/master/images/Picture2.jpg)
 
->That configuration use E DIR in common with Z DIR that permit use board for CNC  3DPrinters plotter and so on
-
-Tha most common configuration for any build.
+That configuration use E DIR in common with Z DIR that permit use board for CNC  3DPrinters plotter and so on most common configuration for any build.
 
 Board currenlty in shippping to italy need wait for testing and we release gerber original easyeda project and cleaned code .
