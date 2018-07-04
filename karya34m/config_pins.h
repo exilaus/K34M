@@ -21,53 +21,16 @@
 #define MOTOR_3_DIR 1 // 1: normal -1:inverted
 #define THEISR
 
-// ========== AVR ================================================
-#if defined(__AVR__)
-//#define BOARD_CHCSHIELDV3
-//#define BOARD_TARANTHOLE
-//#define BOARD_SEMEDIYNANO
-//#define BOARD_NANONANO
-//#define BOARD_NANONANO_DELTA
-//#define BOARD_NANONANO_DELTA_NOSD
-//#define BOARD_NANONANO_SDCARD
-//#define BOARD_GEN7
-//#define BOARD_RAMP13
-//#define BOARD_RAMP13_DELTA
-//#define BOARD_RAMP13_3DPLEX
-//#define BOARD_NANO_3DPLEX
-//#define BOARD_DIY_4XI
-//#define BOARD_DIY_CNC1
-//#define BOARD_SEMEDIY128AU
-#define ANALOGSHIFT 0 // 10bit adc
-#define SUBPIXELMAX 0  // multiple axis smoothing / AMASS maximum subpixel
-// ======= STM32F103 ===================================================
-#elif defined(__ARM__)
-//#define SUBPIXELMAX 6  // multiple axis smoothing / AMASS maximum subpixel
-//#define BOARD_NANONANO_STM32
-//#define BOARD_ST33DV1_STM32
-//#define BOARD_ST33DV1_STM32_3DPLEX
-//#define BOARD_ST33DV1_XYYZ_STM32
-//#define BOARD_ST33DV1_CNC_STM32
-#define ANALOGSHIFT 2 // 12bit adc
-#define SUBPIXELMAX 6  // multiple axis smoothing / AMASS maximum subpixel
-// ====== ESP32 ====================================================
-#elif defined(ESP32)
-#define BOARD_ESP32VN3D
-#define THEISR ICACHE_RAM_ATTR 
-//#define SUBPIXELMAX 6  // multiple axis smoothing / AMASS maximum subpixel
 // ====== ESP8266 ====================================================
-#elif defined(ESP8266)
+#if defined(ESP8266)
 //#define SUBPIXELMAX 6  // multiple axis smoothing / AMASS maximum subpixel
 #define THEISR ICACHE_RAM_ATTR 
 #define ANALOGSHIFT 0 // 10bit adc ??
 
 
-//#define BOARD_NANONANO_WEMOS
-#define BOARD_WEMOS3D_Plasma
-//#define BOARD_WEMOSCNC
-//#define BOARD_MINICNC_ESP01
-//#define BOARD_WEMOS_XYY_LASER
-//#define BOARD_ESP01CNC_V1
+
+#define BOARD_K34M_Plasma
+//#define BOARD_K34M_
 #endif
 
 #include "boards.h"
@@ -233,37 +196,3 @@
 #define ENDSTOP_MOVE 3   //2mm move back after endstop hit, warning, must
 #define HOMING_MOVE 2000
 
-// KontrolBox a series resistor with switch to a analog PIN
-// MCU only
-#ifndef ISPC
-
-
-/*
-    MACROS for KBOXKontroller
-
-*/
-
-
-#define KBOX_KEY_CHECK(k)   case KBOX_KEY##k##_R : lkey = k;kdl=500;break;
-//#define KBOX_SHOW_VALUE
-#define KBOX_KEY1_R 0 ... 10
-#define KBOX_KEY2_R 500 ... 530
-#define KBOX_KEY3_R 670 ... 695
-#define KBOX_KEY4_R 750 ... 780
-
-#define KBOX_DO_CHECK  KBOX_KEY_CHECK(1) KBOX_KEY_CHECK(2) KBOX_KEY_CHECK(3) KBOX_KEY_CHECK(4)
-
-
-#ifdef KBOX_PIN
-#define KBOX_KEY4_ACTION zprintf(PSTR("HOMING\n"));homing();
-#define KBOX_KEY3_ACTION zprintf(PSTR("HEATING\n"));set_temp(190);
-#define KBOX_KEY2_ACTION if (sdcardok) {sdcardok = sdcardok == 1 ? 2 : 1;zprintf(PSTR("SD\n"));} else demoSD();
-#define KBOX_KEY1_ACTION RUNNING=0;sdcardok=0;zprintf(PSTR("STOP\n"));power_off();
-
-#define KBOX_KEY_ACT(k)   case k: zprintf(PSTR("Act %d\n"),k); KBOX_KEY##k##_ACTION  ;break;
-#define KBOX_DO_ACT  KBOX_KEY_ACT(1) KBOX_KEY_ACT(2) KBOX_KEY_ACT(3) KBOX_KEY_ACT(4)
-#else // no controller
-//#define KBOX_DO_ACT
-#endif
-
-#endif
