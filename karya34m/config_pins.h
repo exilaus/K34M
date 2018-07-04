@@ -58,7 +58,7 @@
 #define CHANGEFILAMENT //580byte
 #define HARDSTOP // allow to stop in the middle of movement, and still keep the current position, great for CNC
 #define WIFISERVER
-#define TELEGRAM
+//#define TELEGRAM
 // ==========================================================
 
 #define INTERPOLATEDELAY  // slower 4-8us
@@ -115,7 +115,6 @@
 #undef USEDIO
 #undef ISRTEMP
 #undef CORESERIAL
-//#undef LCDDISPLAY
 //#undef USETIMER1
 
 #endif
