@@ -87,10 +87,7 @@
 #endif
 
 
-//#undef SDCARD_CS
-#ifdef SDCARD_CS
-#define USE_SDCARD
-#endif
+
 
 
 // ESP8266
@@ -104,10 +101,9 @@
 //
 //Disabled webserver for testing purposes
 //
-#ifdef ESP8266
-#undef WIFISERVER
+//#ifdef ESP8266
+//#undef WIFISERVER
 
-#endif
 
 #ifndef __AVR__
 

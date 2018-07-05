@@ -23,7 +23,7 @@
 #include <FS.h>   // Include the SPIFFS library
 #include <WebSocketsServer.h>
 
-#include <TelegramBot.h>
+//#include <TelegramBot.h>
 
 uint8_t wfhead = 0;
 uint8_t wftail = 0;
@@ -108,7 +108,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t lenght
       for (int i = 0; i < lenght; i++) {
         buf_push(wf, payload[i]);
       }
-      //webSocket.broadcastTXT(payload);
+      webSocket.broadcastTXT(payload);
       break;
   }
 }
@@ -130,41 +130,16 @@ const char BotToken[] = "540208354:AAEEbjIZGymE5Hfifcn9lVfVfCEkUQ2BCeg";
 
 
 WiFiClientSecure net_ssl;
-TelegramBot bot (BotToken, net_ssl);
+//TelegramBot bot (BotToken, net_ssl);
 
 void setupwifi() {
   NOINTS
-  xprintf(PSTR("Try connect wifi AP:%s \n"), wifi_ap);
-  WiFi.mode(WIFI_STA);
-  WiFi.begin ( wifi_ap, );
-  int cntr = 20;
-  while ( WiFi.status() != WL_CONNECTED ) {
-    delay ( 500 );
-    cntr--;
-    if (!cntr)break;
-    xprintf(PSTR("."));
-  }
-  IPAddress ip ;
-  if (WiFi.status() == WL_CONNECTED) {
-    ip = WiFi.localIP();
-    xprintf(PSTR("Connected to:%s Ip:%d.%d.%d.%d\n"), wifi_ap, fi(ip[0]), fi(ip[1]), fi(ip[2]), fi(ip[3]) );
-
-#ifdef TELEGRAM
-    bot.begin();
-    char buf[46];
-    sprintf(buf, "CNC:%s http://%d.%d.%d.%d", wifi_dns, ip[0], ip[1], ip[2], ip[3] );
-
-    if (strlen(wifi_telebot))bot.sendMessage(wifi_telebot, buf);
-#endif
-    xprintf(PSTR("HTTP server started\n"));
-
-  } else {
     WiFi.mode(WIFI_AP);
     const char *password = "123456789";
     WiFi.softAP(wifi_dns, password);
-    ip = WiFi.softAPIP();
+    IPAddress ip = WiFi.softAPIP();
     xprintf(PSTR("AP:%s Ip:%d.%d.%d.%d\n"), wifi_dns, fi(ip[0]), fi(ip[1]), fi(ip[2]), fi(ip[3]) );
-  }
+ 
 
   if ( MDNS.begin ( wifi_dns) ) {
     xprintf(PSTR("MDNS responder started %s\n"), wifi_dns);
