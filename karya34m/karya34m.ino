@@ -143,6 +143,7 @@ void setupwifi() {
   NOINTS
   WiFi.mode(WIFI_STA);
   WiFi.begin( wifi_ap , wifi_pwd); 
+  WiFi.hostname("K34M-"+WiFi.macAddress().substring(4,8));
   int i = 0;
   while ((WiFi.status() != WL_CONNECTED)||(i=100)) { // Wait for the Wi-Fi to connect
     delay(1000);
