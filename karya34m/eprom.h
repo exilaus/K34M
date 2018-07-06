@@ -195,8 +195,8 @@ extern int32_t EEMEM EE_lastline;
 
 extern void reload_eeprom();
 extern void reset_eeprom();
-extern char wifi_ap[40];
-extern char wifi_pwd[20];
+extern char* wifi_ap;
+extern char* wifi_pwd;
 extern char wifi_dns[20];
 extern char wifi_telebot[20];
 
