@@ -4,7 +4,7 @@
 //#define echoserial
 
 char wifi_telebot[20] = "";
-char *wifi_ap = "K43M";
+char *wifi_ap = "K34M";
 char *wifi_pwd = "password";
 char wifi_dns[20] = "K34M";
 
@@ -145,17 +145,19 @@ void setupwifi() {
   WiFi.begin( wifi_ap , wifi_pwd); 
   WiFi.hostname("K34M-"+WiFi.macAddress().substring(4,8));
   int i = 0;
-  while ((WiFi.status() != WL_CONNECTED)||(i=100)) { // Wait for the Wi-Fi to connect
+  while ((WiFi.status() != WL_CONNECTED) and (i < 100)) { // Wait for the Wi-Fi to connect
     delay(1000);
     ++i;
-    if (i=10) {
-                i=100;
+    if (i==10) {
+                
                 WiFi.mode(WIFI_AP);
                 const char *password = "123456789";
                 WiFi.softAP(wifi_ap, wifi_pwd);
                 IPAddress ip = WiFi.softAPIP();
-                xprintf(PSTR("AP:%s Ip:%d.%d.%d.%d\n"), "wifi_dns", fi(ip[0]), fi(ip[1]), fi(ip[2]), fi(ip[3]) );
+                xprintf(PSTR("i:%d AP:%s Ip:%d.%d.%d.%d\n"), i , wifi_dns, fi(ip[0]), fi(ip[1]), fi(ip[2]), fi(ip[3]) );
+                i=100;
                }
+    zprintf(PSTR("."));
   }
 
   Serial.println(WiFi.localIP());         // Send the IP address of the ESP8266 to the computer
