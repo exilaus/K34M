@@ -35,6 +35,12 @@ var xmin = 100000;
 var ymin = 100000;
 var xmax = 0;
 var ymax = 0;
+var sxmin = 100000;
+var symin = 100000;
+var sxmax = 0;
+var symax = 0;
+var calcmax=0;
+
 var gcodes = [];
 var harga=1000;
 var cncz=0;
@@ -64,10 +70,10 @@ var sgcodes = [];
 
 
 var jmltravel=0;
-function draw_gcode(num, lcol, lines) {
-   if (xmax < xmin);
-   var dpm = 435.0 / (xmax);
-   dpm = Math.min(dpm, 440.0 / (ymax));
+function draw_line(num, lcol, lines) {
+   if (sxmax < sxmin);
+   var dpm = 440.0 / (sxmax);
+   dpm = Math.min(dpm, 440.0 / (symax));
    var x = lx / dpm;
    var y = ly / dpm;
    var cxmin = 100000;
@@ -75,6 +81,10 @@ function draw_gcode(num, lcol, lines) {
    var cxmax = 0;
    var cymax = 0;
    var n = 0;
+   var sc=1;
+   if (document.getElementById("flipx").checked)sc=-1;
+   var ro=1;
+   if (document.getElementById("rotate").checked)ro=-1;
    var c = document.getElementById("myCanvas1");
    //alert(c);
    var ctx = c.getContext("2d");
@@ -86,6 +96,12 @@ function draw_gcode(num, lcol, lines) {
       g = i;
       x=lines[i][1];
       y=lines[i][2];
+      if (ro==-1){
+         xx=x;
+         x=y;
+         y=xx;
+      }
+      if (sc==-1)x=sxmax-x;
       if (g >= 0) {
            ctx.beginPath();
            if (g == 0) {X1=x*dpm;Y1=y*dpm;jmltravel++;ctx.strokeStyle = "#FFeeee";}
@@ -110,28 +126,46 @@ function draw_gcode(num, lcol, lines) {
    if (cxmin < cxmax) ctx.fillText("#" + num,dpm*((cxmax-cxmin)/2+cxmin),dpm*cymax+10);
 }
 var lastz=0;
-function lines2gcode(data,z,cuttabz) {
+function lines2gcode(num,data,z,cuttabz) {
    // the idea is make a cutting tab in 4 posisiton,:
    //
    var len=Math.abs(data[0]);
-   if (len<50)cuttabz=0;
+   if (len<50)cuttabz=z;
    var lenc=0;
-   var cuttablen=12; // 3mm
+   var cuttablen=8;
    var cut=[];
-   lc=len/4;
+   if (len>150) {
+	lc=len/4;
+   } else {
+	lc=len/2;
+   }
    slc=lc/2;
    cut[0]=lc-slc - cuttablen;
    cut[1]=lc*2-slc - cuttablen;
    cut[2]=lc*3-slc - cuttablen;
    cut[3]=lc*4-slc - cuttablen;
+   
+   
    cutat=0;
    var X1=data[2];
    var Y1=data[3];
-   var lx=X1;
-   var ly=Y1;
    var lines=data[4];
    var sc=1;
-   if (document.getElementById("flipx").checked)sc=-1;
+   if (document.getElementById("flipx").checked){
+      sc=-1;
+      X1=sxmax-X1;
+   }
+   var ro=1;
+   if (document.getElementById("rotate").checked){
+      ro=-1;
+      XX=X1;
+      X1=Y1;
+      Y1=XX;
+   }
+
+   var lx=X1;
+   var ly=Y1;
+
    // turn off tool and move up if needed
   var cmd = getvalue('cmode');
   var pw1 = 1;
@@ -146,17 +180,17 @@ function lines2gcode(data,z,cuttabz) {
   }
 
    div="";
-   if (xmax < xmin) return cdiv;
+   if (sxmax < sxmin) return cdiv;
    // deactivate tools and move to cut position
-   div = div + "\n;SHAPE\n";
+   div = div + "\n;SHAPE #"+num+"\n";
    if (pw2) div = div + "M106 S" + pw1 + "\n";
    div = div + pup + '\n';
    if (cmd==2){
-      gcode0(f1,X1*sc,0);
+      gcode0(f1,X1,0);
    }
-   gcode0(f1,X1*sc,Y1);
+   gcode0(f1,X1,Y1);
 
-   div = div + "G0 Z"+lastz;
+   div = div + "G0 Z"+lastz+"\n";
    lastz=z;
 
    // activate tools and prepare the speed
@@ -164,8 +198,16 @@ function lines2gcode(data,z,cuttabz) {
    div = div + pdn.replace("=cncz",mround(z)) + '\n';
    var incut=0;
    for (var i=0;i<lines.length;i++){
-      x=lines[i][1]*sc;
+      x=lines[i][1];
       y=lines[i][2];
+      if (sc==-1){
+         x=sxmax-x;
+      }
+      if (ro==-1){
+         xx=x;
+         x=y;
+         y=xx;
+      }
       var iscut=0;
       if ((cuttabz>z) && (cutat<4)) {
          // if cut1 is in lenc and lencnext then cut the line
@@ -211,12 +253,12 @@ function lines2gcode(data,z,cuttabz) {
       }
    }
    //close loop
-   gcode1(f2, X1*sc, Y1);
+   gcode1(f2, X1, Y1);
    if (cmd == 2) {
       // if foam mode must move up
-        gcode0(f1,X1*sc,0);
+        gcode0(f1,X1,0);
     }
-    gcode0(f1,X1*sc,Y1);
+    gcode0(f1,X1,Y1);
 
    return div;
 }
@@ -239,7 +281,7 @@ function gcode_verify() {
     var sfinal = 0;
     ctx.clearRect(0, 0, c.width, c.height);
     for (var i = 0; i < sgcodes.length; i++) {
-        draw_gcode(i + 1, getRandomColor(), sgcodes[i][4]);
+        draw_line(i + 1, getRandomColor(), sgcodes[i][4]);
         sfinal += Math.abs(sgcodes[i][0]);
     }
     //sfinal+=jmltravel*10;
@@ -255,6 +297,14 @@ function gcode_verify() {
 
 function sortedgcode() {
     sgcodes = [];
+    sxmax=xmax;
+    symax=ymax;
+    sxmin=xmin;
+    symin=ymin;
+    xmax=-10000;
+    ymax=-10000;
+    xmin=100000;
+    ymin=100000;
     var sm = -1;
     var divs = '';
     var lx=0;
@@ -292,7 +342,7 @@ function sortedgcode() {
     cuttab=cncdeep+getvalue("tabc")*1;
     for (var i = 0; i < re; i++) {
       for (var j=0;j<sgcodes.length;j++){
-        s += lines2gcode(sgcodes[j],cncz,cuttab);
+        s += lines2gcode(j+1,sgcodes[j],cncz,cuttab);
      }
      cncz+=cncdeep/re;
     }
@@ -301,7 +351,7 @@ function sortedgcode() {
     setvalue("gcode",s);
     sc=1;
     if (document.getElementById("flipx").checked) sc=-1;
-    setvalue("pgcode",getvalue("pup")+"\nM3 S300 P50\nG0 F10000 X" + mround(sc*xmin) + " Y" + mround(ymin) + "\nM3 S300 P50\nG0 X" + mround(sc*xmax) + "\nM3 S300 P50\nG0 Y" + mround(ymax) + "\nM3 S300 P50\nG0 X" + mround(sc*xmin) + " \nM3 S300 P50\nG0 Y" + mround(ymin) + "\n");
+    setvalue("pgcode",getvalue("pup")+"\nM3 S255 P10\nG0 F10000 X" + mround(sc*xmin) + " Y" + mround(ymin) + "\nM3 S255 P10\nG0 X" + mround(sc*xmax) + "\nM3 S255 P10\nG0 Y" + mround(ymax) + "\nM3 S255 P10\nG0 X" + mround(sc*xmin) + " \nM3 S255 P10\nG0 Y" + mround(ymin) + "\n");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -340,6 +390,7 @@ function myFunction(scale1) {
     var pdn = getvalue('pdn');
     var f1 = getvalue('trav') * 60;
     var f2 =getvalue('feed') * 60;
+	var det=getvalue('feed')/15.0;
     if (cmd == 2) {
         pw1 = pw2;
         f1 = f2;
@@ -494,7 +545,7 @@ function myFunction(scale1) {
             var c = Math.sqrt(c * c + d * d);
 
             //g=1/((a+b+c)*division);
-            g = 0.3 / (a + b + c);
+            g = det / (a + b + c);
             a = a + b + c;
             //alert('dist ='+a+' pezzi='+g);
             //******************************
@@ -768,7 +819,7 @@ function refreshgcode() {
     savesetting();
 }
 
-function xcopy_to_clipboard(id) {
-    document.getElementById('html').select();
+function copy_to_clipboard(id) {
+    document.getElementById(id).select();
     document.execCommand('copy');
 }
