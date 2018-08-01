@@ -394,6 +394,8 @@ void setup() {
   // put your setup code here, to run once:
   //  Serial.setDebugOutput(true);
   serialinit(115200);//115200);
+  pinMode(3, OUTPUT); 
+  pinMode(1, OUTPUT);
   t1 = millis();
   //while (!Serial.available())continue;
   setupother();

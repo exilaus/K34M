@@ -1,138 +1,270 @@
-<html>
-	<head>
-		<title>CostyKarya CNC gcode tracer</title>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K34M</title>
+    <meta name="description" content="K34M">
+    <meta name="author" content="K34M">
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/demo.css">
+    <link rel="stylesheet" type="text/css" href="css/component.css">
+    <!--[if IE]>
+  		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>		<![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <header class="clearfix"> </header>
+      <div id="tabs" class="tabs">
+        <nav>
+          <ul>
+            <li><a href="#section-1"><span>Machine</span></a></li>
+            <li><a href="#section-2"><span>Trace</span></a></li>
+            <li><a href="#section-3"><span>Gcode sender</span></a></li>
+            <li><a href="#section-4"><span>web Gcode viewer</span></a></li>
+          </ul>
+        </nav>
+        <div class="content">
+          <section id="section-1">        
+	  <div class="mediabox" > 
+	  <b>Machine Control</b><br>
+      Serial Port <button id="btinitser">?</button>      <select id="comport">
+      </select>
+      <br>
+      <button id="btconnect">Connect</button>
+      <div id="status">Status:not connected</div>
+      Move mm:<br>
+      <trvalign="center" align="center"> </trvalign="center"><trvalign="center"
 
-	</head>
+        align="center"> </trvalign="center"><trvalign="center" align="center">
+      </trvalign="center">
+      <table style="width: 195px;"
+ background="./img/cross.webp"
+ border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr align="center" valign="center">
+      <td style="text-align: center; width: 62px;" colspan="3">
+      <input style="width: 191px ! important;" id="move" min="1" max="101" value="50" step="25" class="saveit" type="range"> <br>
+      </td>
+    </tr>
+    <tr style="height: 65px;" align="center"
+ valign="center">
+      <td style="width: 62px;">&nbsp; <button style="border: 0px solid black; background-color: transparent; vertical-align: text-bottom;" id="btzup"><font size="26">&nbsp;</font></button></td>
+      <td style="width: 63px;"><button style="border: 0px solid black; background-color: transparent;" id="btup"><font size="26">&nbsp;</font></button> </td>
+      <td style="width: 62px;"><button style="border: 0px solid black; background-color: transparent;" id="bt3Edn"><font size="26">&nbsp;</font></button> </td>
+    </tr>
+    <tr style="height: 65px;" align="center" valign="center">
+      <td style="width: 62px;"><button style="border: 0px solid black; background-color: transparent;" id="btleft"><big>&nbsp;&nbsp;&nbsp;&nbsp;</big></button></td>
+      <td style="width: 63px;"><button style="border: 0px solid black; background-color: transparent;" id="bt3home"><big>&nbsp;&nbsp;&nbsp;&nbsp;</big></button></td>
+      <td style="width: 62px;"><button style="border: 0px solid black; background-color: transparent;" id="btright"><big>&nbsp;&nbsp;&nbsp;&nbsp;</big></button></td>
+    </tr>
+    <tr style="height: 65px;" center="" align="center">      
+	<td style="width: 62px;"><button style="border: 0px solid black; background-color: transparent;" id="btzdn"><font size="26">&nbsp;</font></button></td>
+      <td style="width: 63px;"><button style="border: 0px solid black; background-color: transparent;" id="btdn"><font size="26">&nbsp;</font></button></td>
+      <td style="width: 62px;"><button style="border: 0px solid black; background-color: transparent;" id="bt3Eup"><font size="26">&nbsp;</font></button></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+ <div class="mediabox" > 
+      <table style="width: 195px; height: 249px;">
+        <tbody>
+          <tr>
+            <td colspan="3" align="center"> <button id="bthit">HIT</button> <button id="btsethome2">G92</button>
+              <button id="btsethome">Z0</button> <br><button id="btsethome3">Z2</button>
+              <button id="bthoming">G28</button> <button id="bthardstop">M2</button>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" align="center"> <button id="btinit">Run Init</button> <button id="btpreview">Preview</button><br>
+              <button id="btexecute">Execute</button> 
+              <button id="btpause">PAUSE</button> <br> <button id="btmotoroff">MOTOROFF</button>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" align="center"><input size="10" id="edgcode" class="saveit"><button id="btsend">Send</button> </td>
+          </tr>
+        </tbody>
+      </table>
+      <b>3D printer</b><br>
+      <div id="info3d"></div>
+      <button id="bt3home">Home</button> <button id="bt3pla">Temp 180'</button>
+      <button id="bt3t0">Temp 0'</button> <button id="bt3read">Get Temp</button>
+      <button id="bt3limit">Check Limit</button> <br>
+      <input id="extmm" class="saveit" size="2" value="5"> 
+	   </div><div class="mediabox" > 
+      <b>EEPROM</b><br>
+      <button id="bt3eeprom">Read EEPROM</button><br>
+      <select id="eepromid">
+      </select>
+      <input id="eepromval" size="3"><button id="bt3seteeprom">Set EEPROM</button><br><br>
+	  <button id="tracingbt">GCODE SENDER</button> <b>GCODE</b><button id="btcopy1">Copy</button><br>
+                          <textarea style="font-size: 10;width:100%;height:200px" id="gcode" class="saveit">      </textarea>                                                  
+                          <br>
+                          <button id="btsaveset">Save Config</button> 
+    </div>
+		   
+          </section>
+          <section id="section-2">
+            <div>
+              <table>
+                <tbody>
+                  <tr>
+                    <td bgcolor="#cccccc"> <br>
+                    </td>
+                    <td bgcolor="yellow">
+                      <p id="area_dimension"></p>
+                      <br>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <table width="100%">
+                <tbody>
+                  <tr width="1000px" valign="top">
+                    <td id="tracing">
+                      <table style="font-size: 10pt;font-family: arial;text-align:  right;background: yellow;"
 
+                        width="100%">
+                        <tbody>
+                          <tr>
+                            <td colspan="3"><input accept=".bmp,.jpg,.gif,.png"
 
-<body style="font-family:arial;font-size:12pt">
-    <table><tr><td bgcolor=#cccccc>
-		<td bgcolor=yellow><p id="area_dimension"></p></table><table width=100%>
-    <tr valign=top width=1000px>
-	<td id=tracing>
-      <table width=100% style="font-size: 10pt;font-family: arial;text-align:  right;background: yellow;">
-        <tr><td colspan=3><input type='file' accept='.bmp,.jpg,.gif,.png' id=btfile>
-        <tr><td colspan=2>Retrace Smoothness <td><input id=smooth size=2 value="0.7" class=saveit>
-        <tr style="background:lime"><td>DPI<td colspan=2>Machine
+                                id="btfile" type="file"> </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">Retrace Smoothness </td>
+                            <td><input id="smooth" size="2" value="0.7" class="saveit">
+                            </td>
+                          </tr>
+                          <tr style="background:lime">
+                            <td>DPI</td>
+                            <td colspan="2">Machine </td>
+                          </tr>
+                          <tr>
+                            <td><input id="scale" size="5" value="72" class="saveit">
+                            </td>
+                            <td colspan="2">
+                              <select id="cmode" class="saveit">
+                                <option value="1">Laser</option>
+                                <option value="3">CNC</option>
+                                <option value="2">Foam</option>
+                              </select>
+                              <br>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="3"> Material
+                              <select id="material" class="saveit">
+                                <option value="10,1,25">Laser Akrilik 1.5mm</option>
+                                <option value="8,1,27">Laser Akrilik 2mm</option>
+                                <option value="8,1,32">Laser Akrilik 2mm Warna</option>
+                                <option value="6,1,37">Laser Akrilik 3mm</option>
+                                <option value="6,1,42">Laser Akrilik 3mm Warna</option>
+                                <option value="4,1,47">Laser Akrilik 4mm</option>
+                                <option value="4,1,52">Laser Akrilik 4mm Warna</option>
+                                <option value="3,1,57">Laser Akrilik 5mm</option>
+                                <option value="3,1,62">Laser Akrilik 5mm Warna</option>
+                                <option value="2,1,67">Laser Akrilik 6mm</option>
+                                <option value="2,1,72">Laser Akrilik 6mm Warna</option>
+                                <option value="6,1,7">Laser Triplek 5mm</option>
+                                <option value="6,2,9">Laser Triplek 9mm</option>
+                                <option value="6,1,7">MDF 5mm</option>
+                                <option value="15,2,9,9.5">CNC MDF 9mm</option>
+                                <option value="10,4,27,4.5">CNC ACP 4mm</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr style="background:lime">
+                            <td>Tools Off</td>
+                            <td colspan="2">Tools On </td>
+                          </tr>
+                          <tr>
+                            <td><input id="pup" size="8" value="m3 s0" class="saveit">
+                            </td>
+                            <td colspan="2"><input id="pdn" size="12" value="m3 s255"
 
-        <tr><td><input id="scale" size=5 value="72" class=saveit>
-		  <td colspan=2>
-         <select id=cmode  class=saveit><option value=1>Laser</option><option value=3>CNC</option><option value=2>Foam</option></select> <br>
-      <tr><td colspan=3>
-    Material <select id=material class=saveit>
-			<option value="10,1,25">Laser Akrilik 1.5mm</option>
-			<option value="8,1,27">Laser Akrilik 2mm</option>
-			<option value="8,1,32">Laser Akrilik 2mm Warna</option>
-			<option value="6,1,37">Laser Akrilik 3mm</option>
-			<option value="6,1,42">Laser Akrilik 3mm Warna</option>
-			<option value="4,1,47">Laser Akrilik 4mm</option>
-			<option value="4,1,52">Laser Akrilik 4mm Warna</option>
-			<option value="3,1,57">Laser Akrilik 5mm</option>
-			<option value="3,1,62">Laser Akrilik 5mm Warna</option>
-			<option value="2,1,67">Laser Akrilik 6mm</option>
-			<option value="2,1,72">Laser Akrilik 6mm Warna</option>
-			<option value="6,1,7">Laser Triplek 5mm</option>
-			<option value="6,2,9">Laser Triplek 9mm</option>
-			<option value="6,1,7">MDF 5mm</option>
-			<option value="15,2,9,9.5">CNC MDF 9mm</option>
-			<option value="10,4,27,4.5">CNC ACP 4mm</option>
-		</select>
-		<tr style="background:lime"><td>Tools Off<td colspan=2 >Tools On
-
-      <tr><td><input id=pup size=8 value="m3 s0" class=saveit>
-		<td colspan=2><input id=pdn size=12 value="m3 s255" class=saveit>
-
-      <tr style="background:lime"><td>Travel<td>Feed<td>Repeat
-
-      <tr><td><input id=trav size=2 value=150 class=saveit>
-		<td><input id=feed size=2 value=6 class=saveit>
-
-      <td><input id=repeat class=saveit size=1 value=1>
-
-      <tr style="background:lime"><td>Zdown<td colspan=2>Tab Cutout
-
-      <tr><td><input id=zdown size=1 value=1 class=saveit>
-      <td colspan=2><input id=tabc value=0 size=3  class=saveit>
-
-     <tr style="background:lime"><td>Flip X <input id=flipx type=checkbox>
-	  <td>Rotate <input id=rotate type=checkbox>
-      <tr><td colspan=3><button id=btrecode >Re-gcode</button>
-   </table>
-
-    <br><B>Preview GCODE</b><button id=btcopy2>Copy</button><br>
-    <textarea style="font-size: 10;width:100%;height:70px" id="pgcode" class=saveit>
-    </textarea>
-    <B>INIT</b><br>
-    <textarea style="font-size: 10;width:100%;height:70px" id="icode" class=saveit>
+                                class="saveit"> </td>
+                          </tr>
+                          <tr style="background:lime">
+                            <td>Travel</td>
+                            <td>Feed</td>
+                            <td>Repeat </td>
+                          </tr>
+                          <tr>
+                            <td><input id="trav" size="2" value="150" class="saveit"></td>
+                            <td><input id="feed" size="2" value="6" class="saveit"></td>
+                            <td><input id="repeat" class="saveit" size="1" value="1"></td>
+                          </tr>
+                          <tr style="background:lime">
+                            <td>Zdown</td>
+                            <td colspan="2">Tab Cutout </td>
+                          </tr>
+                          <tr>
+                            <td><input id="zdown" size="1" value="1" class="saveit"></td>
+                            <td colspan="2"><input id="tabc" value="0" size="3" class="saveit"></td>
+                          </tr>
+                          <tr style="background:lime">
+                            <td>Flip X <input id="flipx" class="saveit" type="checkbox"></td>
+                            <td>Rotate <input id="rotate" class="saveit" type="checkbox"></td>
+                          </tr>
+                          <tr>
+                            <td>Segment <input id="sharp" value="0.9" size="2" class="saveit"><input id="segment" class="saveit" type="checkbox"></td>
+                            <td colspan="2"><button id="btrecode">Re-gcode</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <br>
+                      <b>Preview GCODE</b><button id="btcopy2">Copy</button><br>
+                      <textarea style="font-size: 10;width:100%;height:50px" id="pgcode" class="saveit">    </textarea> <b>INIT</b><br>
+                      <textarea style="font-size: 10;width:100%;height:50px" id="icode"class="saveit">
 ;Init machine
 ;===============
 ;M206 P80 S0.3 ;x backlash
 ;M206 P84 S0.3 ;y backlash
 ;M206 P88 S0.3 ;z backlash
 ;===============
-    </textarea>
-   <td width=400px><button id=tracingbt>GCODE SENDER</button>
-      <B>GCODE</b><button  id=btcopy1>Copy</button><br>
-      <textarea style="font-size: 10;width:100%;height:500" id="gcode" class=saveit>
-      </textarea>
-	<td wdith=480px>
-    <canvas id="myCanvas1" width="480" height="500" style="border:1px solid #FF0000;"></canvas><br>
-	For real gcode simulator, visit <a href="https://ncviewer.com/" target="_blank" >ncviewer</a> and paste gcode there.
-    <br><button id=btsaveset>Save Config</button>
+    </textarea>Segments:<br>
+                          <textarea style="font-size: 10;width:100%;height:50px"id="segm"></textarea> <canvas id="myCanvas1" width="480" height="500" style="border:1px solid #FF0000;"></canvas><br></table></section>
+                  
+                      <section id="section-3">
+                  
+                        <div>
+                          <button id="tracingbt">GCODE SENDER</button> <b>GCODE</b><button id="btcopy1">Copy</button><br>
+                          <textarea style="font-size: 10;width:100%;height:500" id="gcode" class="saveit">      </textarea> 
+                          
+                          For real gcode simulator, visit <a href="https://ncviewer.com/"
 
-    <td width=300px><b>Machine Control</b><br>
-	Serial Port <button id=btinitser>?</button> <select id=comport></select><br><button id=btconnect>Connect</button>
-	<div id=status>Status:not connected</div>
-	<hr>
-
-	<table><tr align=center valign=center>
-	<td>Move:<input id=move value=50 size=1 class=saveit>mm
-	<td><button id=btleft>&lt;</button>
-	<td><button  id=btup>/\</button><br>
-	<button  id=btdn>\/</button><td>
-	<button  id=btright>&gt;</button>
-	<td><button  id=btzup>Z/\</button><br>
-	<button  id=btzdn>Z\/</button>
-	</table>
-	<br>
-	<button  id=bthit>HIT</button>
-    <button  id=btsethome2>G92</button>
-	<button  id=btsethome>Z0</button>
-	<button  id=btsethome3>Z2</button>
-	<button id=bthoming >G28</button>
-   <button id=bthardstop >M2</button>
-	<br><br>
-   <button id=btinit>Run Init</button>
-	<button id=btpreview>Preview</button>
-	<button id=btexecute>Execute</button>
-   <br>
-	<button id=btpause>PAUSE</button>
-	<button id=btmotoroff>MOTOROFF</button>
-	<br>
-	<input size=10 id=edgcode class=saveit><button id=btsend>Send</button>
-	<hr><b>3D printer</b><br>
-	<div id=info3d></div>
-	<button  id=bt3home>Home</button>
-    <button  id=bt3pla>Temp 180'</button>
-	<button  id=bt3t0>Temp 0'</button>
-	<button  id=bt3read>Get Temp</button>
-	<button  id=bt3limit>Check Limit</button>
-	<br><input id=extmm class=saveit size=2 value=5>
-	<button id=bt3Eup>Ext-Up</button>
-   <button id=bt3Edn>Ext-Dn</button>
-	<hr><b>EEPROM</b><br>
-	<button  id=bt3eeprom>Read EEPROM</button><br>
-	<select id=eepromid>
-		
-	</select><input id=eepromval size=3><button  id=bt3seteeprom>Set EEPROM</button>
-	
-	<!-- CNC-1 -->
-
-</center>
-	<script src="Potrace.js"></script>
-	<script src="costy-x.js"></script>
-	<script src="serial.js"></script>
-
-</body>
-
+                            target="_blank">ncviewer</a> and paste gcode there.
+                          <br>
+                          <button id="btsaveset">Save Config</button> 
+                        </div>
+                      </section>
+					  <section id="section-4">
+                  
+                        <div>
+						<a href="https://ncviewer.com/" target="_blank">ncviewer</a> 
+					    </div>
+                      </section>
+                      <!-- /content -->
+                      <!-- /tabs -->
+                      <script src="Potrace.js"></script>
+                      <script src="costy-x.js"></script>
+                      <script src="serial.js"></script>
+                      <script src="js/cbpFWTabs.js"></script>
+                      <script>
+			new CBPFWTabs( document.getElementById( 'tabs' ) );
+		</script> </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    
+  </body>
 </html>
