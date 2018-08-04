@@ -8,7 +8,70 @@
 #include "eprom.h"
 
 
+#if defined(USE_SDCARD) && defined(SDCARD_CS)
+// generic sdcard add about 800uint8_t ram and 8kb code
+#ifdef ESP8266 || __ARM__
+#include "SdFat.h"
+SdFat SD;
+#else
+#include "SdFat.h"
+SdFat SD;
+#endif
+#endif
 int32_t linecount, lineprocess;
+#if defined(USE_SDCARD) && defined(SDCARD_CS)
+
+// SD card chip select pin.
+const uint8_t SD_CS_PIN = SDCARD_CS;
+
+File myFile;
+void demoSD()
+{
+#ifdef ESP8266
+  if (!SD.begin(SD_CS_PIN)) {
+#else
+  if (!SD.begin(SD_CS_PIN, SD_SCK_MHZ(50))) {
+#endif
+    zprintf(PSTR("SDFAIL\n"));
+    sdcardok = 0;
+    return;
+  }
+  zprintf(PSTR("SDOK\n"));
+
+  // open the file. note that only one file can be open at a time,
+  // so you have to close this one before opening another.
+  // re-open the file for reading:
+  myFile = SD.open("print.gco");
+  if (myFile) {
+    // calc total length
+    char c;
+    linecount = 1000;
+    lineprocess = 1;
+#ifdef POWERFAILURE
+    // continue from last line if needed
+    int32_t ll = eepromread(EE_lastline);
+    if (ll > 0) {
+      linecount = 1;
+      while (linecount < ll) {
+        c = myFile.read();
+
+        // todo : parse the last X Y Z E
+        //        need faster reading
+
+        if (c == '\n')linecount++;
+      }
+      // close the file:
+      myFile.close();
+      myFile = SD.open("print.gco");
+    }
+    zprintf(PSTR("Resume %d\n"), linecount);
+#endif
+    sdcardok = 1;
+  } else {
+    zprintf(PSTR("no gco\n"));
+  }
+}
+#endif
 #ifdef USETIMER1
 #define MLOOP
 #else

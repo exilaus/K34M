@@ -87,6 +87,17 @@ void init_temp()
 
   ADCREAD(temp_pin)
 #elif defined(ESP8266)
+//////////////////////
+////// added for esp -- under test
+///////////////////////////
+
+  analogRead(temp_pin);
+  //adcvalue = analogRead(A0);
+//  serial.print("VALUE: "+String(adcvalue));
+  
+//////////////////////
+////// End  added for esp -- under test
+///////////////////////////  
 #endif
 #endif
 
@@ -138,13 +149,20 @@ void temp_loop(uint32_t cm)
     ADCREAD(temp_pin)
     v = vanalog[temp_pin];
 #else
-    v = analogRead(temp_pin) >> ANALOGSHIFT;
+   // v = analogRead(temp_pin) >> ANALOGSHIFT;
     //zprintf(PSTR("%d\n"),fi(v));
 #endif
 #ifdef ESP8266
-    
+    //////////////////////
+////// added for esp -- under test
+///////////////////////////
+    v=analogRead(A0);
+
+
+
     //v = v * 3.3 + 100; //200K resistor
-    v = v * 0.33 + 115; //22K resistor
+    v = v * 0.33/1024 + 115; //22K resistor
+  // Serial.println("VALUE *0.33: "+String(v));
     
 #endif
 
