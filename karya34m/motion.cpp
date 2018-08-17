@@ -48,17 +48,6 @@
 
 
 #ifdef USETIMER1
-#ifdef __AVR__
-#define CLOCKCONSTANT 2000000.f        // tick/seconds
-#define DSCALE 0   // use 2Mhz timer need to shift right 2bit
-#define DIRDELAY 20
-#endif
-
-#ifdef __ARM__
-#define CLOCKCONSTANT 8000000.f        // tick/seconds
-#define DSCALE 0   // use 8Mhz timer shift 0bit
-#define DIRDELAY 20 // usec
-#endif
 
 #ifdef ESP8266
 #define CLOCKCONSTANT 5000000.f        // tick/seconds

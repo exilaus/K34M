@@ -88,7 +88,7 @@ function sendgcode(g){
 }
 function nextgcode(){
 	if (comtype==1 && !wsconnected){
-		//setTimeout(nextgcode,1000);
+		//setTimeout(nextgcode,1000);  !!!! if crash wait to autoreboot LOL
 		return;	
 	}; // wait until socket connected
 	if (okwait) return;
@@ -97,7 +97,8 @@ function nextgcode(){
 		var g=egcodes[eline];
 		eline++;
 		if ((g) && (g[0]!=';')) {
-			sendgcode(g.split(";")[0]);
+			 setTimeout(sendgcode(g.split(";")[0]),(eline+1)*150);
+			//sendgcode(g.split(";")[0]);
 			okwait=1;
 			return;
 		}

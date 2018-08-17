@@ -2,61 +2,14 @@
 #include "config_pins.h"
 #include "common.h"
 
-char wifi_telebot[20]="";
-char wifi_ap[40]="myap";
-char wifi_pwd[20]="pwd";
-char wifi_dns[20]="karyacnc";
+//char wifi_telebot[20]="";
+//char wifi_ap[40]="myap";
+//char wifi_pwd[20]="pwd";
+//char wifi_dns[20]="karyacnc";
 
 
 #ifdef USE_EEPROM
 #include "eprom.h"
-
-
-
-#ifdef __AVR__
-float EEMEM EE_xhome;
-float EEMEM EE_yhome;
-float EEMEM EE_zhome;
-int32_t EEMEM EE_homing;
-int32_t EEMEM EE_jerk;
-
-
-int32_t EEMEM EE_accelx;
-int32_t EEMEM EE_mvaccelx;
-
-
-int32_t EEMEM EE_max_x_feedrate;
-int32_t EEMEM EE_max_y_feedrate;
-int32_t EEMEM EE_max_z_feedrate;
-int32_t EEMEM EE_max_e_feedrate;
-
-float EEMEM EE_xstepmm;
-float EEMEM EE_ystepmm;
-float EEMEM EE_zstepmm;
-float EEMEM EE_estepmm;
-float EEMEM EE_xyscale;
-
-#ifdef USE_BACKLASH
-int32_t EEMEM EE_xbacklash;
-int32_t EEMEM EE_ybacklash;
-int32_t EEMEM EE_zbacklash;
-int32_t EEMEM EE_ebacklash;
-#endif
-
-#ifdef NONLINEAR
-float EEMEM EE_hor_radius;
-float EEMEM EE_rod_length;
-#endif
-float EEMEM EE_towera_ofs;
-float EEMEM EE_towerb_ofs;
-float EEMEM EE_towerc_ofs;
-
-
-#ifdef POWERFAILURE
-int32_t EEMEM EE_lastline;
-#endif
-
-#endif
 
 
 
@@ -101,10 +54,10 @@ void reload_eeprom() {
 #endif
 
 #ifdef WIFISERVER
-  eepromreadstring(380,wifi_telebot);
-  eepromreadstring(400,wifi_ap);
-  eepromreadstring(450,wifi_pwd);
-  eepromreadstring(470,wifi_dns);
+//  eepromreadstring(380,wifi_telebot);
+//  eepromreadstring(400,wifi_ap);
+//  eepromreadstring(450,wifi_pwd);
+//  eepromreadstring(470,wifi_dns);
 #endif  
   
   preparecalc();

@@ -93,7 +93,7 @@
 ///////////////////////////////////////////////////////////////   
   ============================================================================================
 */
-#elif defined(BOARD_WEMOS3D_Plasma)
+#elif defined(BOARD_K34M)
 
 
 // 
@@ -112,7 +112,7 @@
 //static const uint8_t D10  = 1;
 //
 
-
+#define ESP8266
 #define xdirection 14 
 #define xstep  0 
 #define ydirection 12 
@@ -132,7 +132,7 @@
 //#define fan_pin D1 // To be used for plama relay/contact
 
 //#define INVERTENDSTOP
-#define NUMBUFFER 60 // increased buffer from 20 to 80
+#define NUMBUFFER 20 // increased buffer from 20 to 80
 
 ////////////////////////////////////////////////////////////
 ////////////End  K34M Board

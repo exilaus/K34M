@@ -21,37 +21,8 @@
 #define MOTOR_3_DIR 1 // 1: normal -1:inverted
 #define THEISR
 
-// ========== AVR ================================================
-#if defined(__AVR__)
-//#define BOARD_CHCSHIELDV3
-//#define BOARD_TARANTHOLE
-//#define BOARD_SEMEDIYNANO
-//#define BOARD_NANONANO
-//#define BOARD_NANONANO_DELTA
-//#define BOARD_NANONANO_DELTA_NOSD
-//#define BOARD_NANONANO_SDCARD
-//#define BOARD_GEN7
-//#define BOARD_RAMP13
-//#define BOARD_RAMP13_DELTA
-//#define BOARD_RAMP13_3DPLEX
-//#define BOARD_NANO_3DPLEX
-//#define BOARD_DIY_4XI
-//#define BOARD_DIY_CNC1
-//#define BOARD_SEMEDIY128AU
-#define ANALOGSHIFT 0 // 10bit adc
-#define SUBPIXELMAX 0  // multiple axis smoothing / AMASS maximum subpixel
-// ======= STM32F103 ===================================================
-#elif defined(__ARM__)
-//#define SUBPIXELMAX 6  // multiple axis smoothing / AMASS maximum subpixel
-//#define BOARD_NANONANO_STM32
-//#define BOARD_ST33DV1_STM32
-//#define BOARD_ST33DV1_STM32_3DPLEX
-//#define BOARD_ST33DV1_XYYZ_STM32
-//#define BOARD_ST33DV1_CNC_STM32
-#define ANALOGSHIFT 2 // 12bit adc
-#define SUBPIXELMAX 6  // multiple axis smoothing / AMASS maximum subpixel
 // ====== ESP32 ====================================================
-#elif defined(ESP32)
+#if defined(ESP32)
 #define BOARD_ESP32VN3D
 #define THEISR ICACHE_RAM_ATTR 
 //#define SUBPIXELMAX 6  // multiple axis smoothing / AMASS maximum subpixel
@@ -61,13 +32,7 @@
 #define THEISR ICACHE_RAM_ATTR 
 #define ANALOGSHIFT 0 // 10bit adc ??
 
-
-//#define BOARD_NANONANO_WEMOS
-#define BOARD_WEMOS3D_Plasma
-//#define BOARD_WEMOSCNC
-//#define BOARD_MINICNC_ESP01
-//#define BOARD_WEMOS_XYY_LASER
-//#define BOARD_ESP01CNC_V1
+#define BOARD_K34M
 #endif
 
 #include "boards.h"
@@ -87,7 +52,7 @@
 //#define ARC_SUPPORT // 3kb
 
 #define USEDIO // 750bytes this can save almost 20us each bresenham step, is a MUST if not using timer!
-#define USE_BACKLASH  // 400bytes code
+//#define USE_BACKLASH  // 400bytes code
 #define USETIMER1 // Work in progress // 98 bytes// FLASH SAVING
 //#define SAVE_RESETMOTION  // 1000 bytes code, no reset motion, need EEPROM
 //#define LCDDISPLAY 0x3F // more than 2.5K , simple oled controller

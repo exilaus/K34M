@@ -6,16 +6,8 @@
 
 
 
-#if defined( __AVR__)
-#include <avr/eeprom.h>
 
-#define eepromread(p) eeprom_read_dword((uint32_t)&p)
-#define eepromwrite(p,val) eeprom_write_dword((uint32_t)&p,(int32_t)val)
-#define eepromcommit
-#define eeprominit
-
-#elif defined(ESP8266) ///end avr
-
+#if defined(ESP8266) 
 #include <EEPROM.h>
 #define EEMEM
 #define eepromwrite(p,val) EEPROM.put(p, (int32_t)val)
@@ -195,9 +187,9 @@ extern int32_t EEMEM EE_lastline;
 
 extern void reload_eeprom();
 extern void reset_eeprom();
-extern char wifi_ap[40];
-extern char wifi_pwd[20];
-extern char wifi_dns[20];
-extern char wifi_telebot[20];
+//extern char wifi_ap[40];
+//extern char wifi_pwd[20];
+//extern char wifi_dns[20];
+//extern char wifi_telebot[20];
 
 #endif // EEPROM_H
